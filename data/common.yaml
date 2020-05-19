@@ -1,5 +1,10 @@
 ---
 systemd::service_limits: {}
+systemd::dropin_files: {}
+systemd::networks: {}
+systemd::timers: {}
+systemd::tmpfiles: {}
+systemd::unit_files: {}
 systemd::manage_resolved: false
 systemd::resolved_ensure: 'running'
 systemd::dns: ~
@@ -25,3 +30,23 @@ systemd::manage_journald: true
 systemd::journald_settings: {}
 systemd::manage_logind: false
 systemd::logind_settings: {}
+
+lookup_options:
+  systemd::service_limits:
+    merge:
+      strategy: deep
+  systemd::dropin_files:
+    merge:
+      strategy: deep
+  systemd::networks:
+    merge:
+      strategy: deep
+  systemd::timers:
+    merge:
+      strategy: deep
+  systemd::tmpfiles:
+    merge:
+      strategy: deep
+  systemd::unit_files:
+    merge:
+      strategy: deep

@@ -6,6 +6,26 @@
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::service_limits``
 #
+# @param dropin_files
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::dropin_file``
+#
+# @param networks
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::network``
+#
+# @param timers
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::timer``
+#
+# @param tmpfiles
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::tmpfile``
+#
+# @param unit_files
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::unit_file``
+#
 # @param manage_resolved
 #   Manage the systemd resolver
 #
@@ -85,6 +105,11 @@
 #   Configure dropin files via hiera with factory pattern
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
+  Hash[String,Hash[String, Any]]                         $dropin_files,
+  Hash[String,Hash[String, Any]]                         $networks,
+  Hash[String,Hash[String, Any]]                         $timers,
+  Hash[String,Hash[String, Any]]                         $tmpfiles,
+  Hash[String,Hash[String, Any]]                         $unit_files,
   Boolean                                                $manage_resolved,
   Enum['stopped','running']                              $resolved_ensure,
   Optional[Variant[Array[String],String]]                $dns,
@@ -116,6 +141,11 @@ class systemd (
   contain systemd::systemctl::daemon_reload
 
   create_resources('systemd::service_limits', $service_limits)
+  create_resources('systemd::dropin_file', $dropin_files)
+  create_resources('systemd::network', $networks)
+  create_resources('systemd::timer', $timers)
+  create_resources('systemd::tmpfile', $tmpfiles)
+  create_resources('systemd::unit_file', $unit_files)
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
     contain systemd::resolved
