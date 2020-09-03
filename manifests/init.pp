@@ -6,10 +6,6 @@
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::service_limits``
 #
-# @param dropin_files
-#   May be passed a resource hash suitable for passing directly into the
-#   ``create_resources()`` function as called on ``systemd::dropin_file``
-#
 # @param networks
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::network``
@@ -105,7 +101,6 @@
 #   Configure dropin files via hiera with factory pattern
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
-  Hash[String,Hash[String, Any]]                         $dropin_files,
   Hash[String,Hash[String, Any]]                         $networks,
   Hash[String,Hash[String, Any]]                         $timers,
   Hash[String,Hash[String, Any]]                         $tmpfiles,
@@ -141,7 +136,6 @@ class systemd (
   contain systemd::systemctl::daemon_reload
 
   create_resources('systemd::service_limits', $service_limits)
-  create_resources('systemd::dropin_file', $dropin_files)
   create_resources('systemd::network', $networks)
   create_resources('systemd::timer', $timers)
   create_resources('systemd::tmpfile', $tmpfiles)
